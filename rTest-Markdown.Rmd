@@ -1,0 +1,41 @@
+---
+title: "rTest-Markdown"
+author: "Chip Towery"
+date: "5/15/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(readxl)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r Flight Time Summary, warning=FALSE}
+Flight_Time_Accuracy <- read_excel("Flight_Time_Accuracy.xlsx")
+summary(Flight_Time_Accuracy)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r Pilot Summary, echo=FALSE, warning=FALSE}
+Flight_Time_Pilot_Summary <- Flight_Time_Accuracy %>% 
+  select(PIC, FlightLogTime, QuotedToActual, EstimatedToActual) %>%
+  group_by(PIC) %>%
+  summarize(FlightLogTime = sum(FlightLogTime), QuotedToActual = mean(QuotedToActual, na.rm = T), EstimatedToActual = mean(EstimatedToActual, na.rm = T)) %>%
+  mutate(FlightLogTime = reorder(FlightLogTime, PIC)) %>%
+  ggplot(aes(PIC, FlightLogTime)) +
+  geom_bar(width = 0.5, stat = "identity") +
+  coord_flip()
+Flight_Time_Pilot_Summary
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

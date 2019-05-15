@@ -15,4 +15,6 @@ Flight_Time_Pilot_Summary <- Flight_Time_Accuracy %>%
   geom_bar(width = 0.5, stat = "identity") +
   coord_flip()
 
+Flight_Time_Pilot_Summary
+
 ggsave("figs/barplot.png")
